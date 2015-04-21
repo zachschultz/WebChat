@@ -1,0 +1,10 @@
+div#chatContainer {
+  border: 1px solid red;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+div#chat {
+  border: 1px solid red;
+  padding: 10px;
+  margin-bottom: 10px;
+}
