@@ -54,6 +54,10 @@ from rest_framework.decorators import parser_classes
 @parser_classes((JSONParser,))
 def makemessage(request):
 
+  messagesCount = Message.objects.all().count()
+  if messagesCount >= 50:
+
+    Message.objects.filter(id__lt=50).delete()
 
   body_unicode = request.body.decode('utf-8')
   body = json.loads(body_unicode)
@@ -63,17 +67,4 @@ def makemessage(request):
   msg = Message(content=content, creator=creator)
   msg.save()
 
-  return HttpResponse('hi')
-
-  # # json_d = json.loads(request.body)
-  # # print(json_d)
-  # # print(request.body)
-  # print(request.body)
-  # json = json.loads(request.body)
-  # print(json)
-  # # print(request.body["content"])
-  # # if request.method == "POST":
-
-
-  # # return JSON of the success confirmation
-  # return HttpResponse(request.body["creator"])
+  return HttpResponse(body)

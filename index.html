@@ -11,6 +11,14 @@
 
   <h1>Welcome to the chat!</h1>
 
+  <div id="initialMessage">
+    <form id="initialForm">
+      <label>Your name: <input id="initialCreator" type="text"></label>
+      <label>Say something crazy! <input id="initialContent" type="text"></label>
+      <input id="firstSubmit" type="submit">
+    </form>
+  </div>
+
   <div id="chatContainer">
     <div id="chat"></div>
     <div id="addMessage">
@@ -32,10 +40,6 @@
         <p><%= message.creator %> at <%= message.date %>: <%= message.content %></p>
     </div>
     <% }); %>
-</script>
-
-<script type="text/template" id="messageElement">
-  <p><%= creator %> at <%= date %>: <%= content %></p>
 </script>
 
 <script src="http://underscorejs.org/underscore.js"></script>

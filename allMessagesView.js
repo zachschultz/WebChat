@@ -1,24 +1,29 @@
 var app = app || {};
 
 app.allMessagesView = Backbone.View.extend({
-  initialize: function() {
+  initialize: function(options) {
     _.bindAll(this, 'render');
     this.collection = new app.Messages();
+    var theColl = this.collection;
     var that = this;
+    var firstMessage = options.firstMessage;
+    firstMessage.save();
     this.collection.fetch({
       success: function() {
         that.render();
       }
     });
+    this.render();
+
   },
 
   template: _.template($('#messagesTemplate').html()),
 
   render: function() {
-    console.log(this.collection.toJSON());
     $(this.el).find('#chat').html(this.template({
       messages: this.collection.toJSON()
     }));
+    this.$el.show();
   },
 
   events: {
@@ -47,29 +52,14 @@ app.allMessagesView = Backbone.View.extend({
         'creator': $creator,
         'content': $content
       });
-      chatMessages.add(newMsg);
+      this.collection.add(newMsg);
       newMsg.save();
     } else {
-      chatMessages.remove(newMsg);
+      this.collection.remove(newMsg);
       alert("Please enter text!");
     }
     console.log($creator + ": " + $content);
     this.render();
   },
 
-  // render: function() {
-
-  //   this.$('#chat').html('');
-  //   this.$('input#user').val('');
-  //   this.$('input#message').val('');
-  //   this.collection.each(this.displayMessage, this);
-  //   return this;
-  // },
-
-  // displayMessage: function(message) {
-  //   var messageView = new app.messageView({
-  //     model: message
-  //   });
-  //   this.$('#chat').append(messageView.render().el);
-  // }
 });
