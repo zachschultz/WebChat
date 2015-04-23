@@ -4,7 +4,7 @@ app.Messages = Backbone.Collection.extend({
 
   model: app.Message,
 
-  url: 'http://127.0.0.1:8000/messages/',
+  url: 'http://46.101.161.80/messages/',
 
   parse: function(response) {
     return response.results;
@@ -13,7 +13,6 @@ app.Messages = Backbone.Collection.extend({
   sync: function(method, model, options) {
     var that = this;
     var params = _.extend({
-      page: 2,
       type: 'GET',
       dataType: 'json',
       url: that.url,

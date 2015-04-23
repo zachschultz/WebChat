@@ -2,7 +2,7 @@ var app = app || {};
 
 app.Message = Backbone.Model.extend({
 
-  url: 'http://127.0.0.1:8000/makemessage/',
+  url: 'http://46.101.161.80/makemessage/',
 
   initialize: function() {
     console.log('CID: ' + this.cid + ' ' + this.get('creator') + " has created a new message: " + this.get('content'));

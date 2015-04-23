@@ -2,27 +2,42 @@ var app = app || {};
 
 app.allMessagesView = Backbone.View.extend({
   initialize: function(options) {
+
     _.bindAll(this, 'render');
     this.collection = new app.Messages();
-    var theColl = this.collection;
+    theColl = this.collection;
     var that = this;
     var firstMessage = options.firstMessage;
+    $('input#creator').val(firstMessage.get('creator'));
+
     firstMessage.save();
-    this.collection.fetch({
-      success: function() {
-        that.render();
-      }
-    });
+
+    theColl.on('add', this.render, this);
+    theColl.on('reset', this.render, this);
     this.render();
+
+    window.setInterval(function() {
+      theColl.fetch({
+        // reset: true,
+        success: function() {
+          that.render();
+          console.log(theColl);
+        }
+      });
+    }, 3000);
+
 
   },
 
   template: _.template($('#messagesTemplate').html()),
 
   render: function() {
+
     $(this.el).find('#chat').html(this.template({
-      messages: this.collection.toJSON()
+      messages: theColl.toJSON()
     }));
+    var $chat = $(this.el).find('#chat');
+    $chat.scrollTop($chat[0].scrollHeight);
     this.$el.show();
   },
 
@@ -52,14 +67,15 @@ app.allMessagesView = Backbone.View.extend({
         'creator': $creator,
         'content': $content
       });
-      this.collection.add(newMsg);
       newMsg.save();
+      // theColl.add(newMsg);
+
     } else {
-      this.collection.remove(newMsg);
+      theColl.remove(newMsg);
       alert("Please enter text!");
     }
-    console.log($creator + ": " + $content);
-    this.render();
+    $('input#content').val('');
+
   },
 
 });

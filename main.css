@@ -7,4 +7,6 @@ div#chat {
   border: 1px solid red;
   padding: 10px;
   margin-bottom: 10px;
+  max-height: 300px;
+  overflow-y: scroll;
 }
