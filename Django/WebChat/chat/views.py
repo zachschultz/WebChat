@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 import json
+from django.utils import timezone
 from django.contrib.auth.models import User
 from rest_framework import generics, permissions, renderers
 from rest_framework.decorators import api_view
@@ -55,16 +56,15 @@ from rest_framework.decorators import parser_classes
 def makemessage(request):
 
   messagesCount = Message.objects.all().count()
-  if messagesCount >= 50:
-
-    Message.objects.filter(id__lt=50).delete()
+  if messagesCount >= 30:
+    Message.objects.all().delete()
 
   body_unicode = request.body.decode('utf-8')
   body = json.loads(body_unicode)
   content = body['content']
   creator = body['creator']
 
-  msg = Message(content=content, creator=creator)
+  msg = Message(content=content, creator=creator, post_date=timezone.now())
   msg.save()
 
   return HttpResponse(body)
