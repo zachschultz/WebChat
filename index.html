@@ -4,40 +4,66 @@
   <meta charset="UTF-8">
   <title>Web Chat</title>
   <link rel="stylesheet" type="text/css" href="main.css">
+
+  <!-- bootstrap css -->
+  <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
 <body>
 
-<div class="main">
+<div class="container">
 
-  <h1>Welcome to the chat!</h1>
-
-  <div id="initialMessage">
-    <form id="initialForm">
-      <label>Your name: <input id="initialCreator" type="text"></label>
-      <label>Say something crazy! <input id="initialContent" type="text"></label>
-      <input id="firstSubmit" type="submit">
-    </form>
+  <div class="row" id="initialRow">
+    <div class="col-md-6 col-md-offset-3">
+      <h1>Welcome to the chat!</h1>
+    </div>
+    <div class="col-md-12 col-md-offset-2">
+      <div id="initialMessage">
+        <form id="initialForm">
+          <label>Your name: <input id="initialCreator" type="text"></label>
+          <label>Say something crazy! <input id="initialContent" type="text"></label>
+          <input id="firstSubmit" type="submit">
+        </form>
+      </div>
+    </div>
   </div>
 
-  <div id="chatContainer">
-    <div id="chat"></div>
-    <div id="addMessage">
-    <form>
-      <label>User:<input id="creator"type="text"></label>
-      <label>Message:<input id="content"type="text"></label>
-      <input id="submitMessage" type="submit">
-    </form>
-    </div>
-    <button id="clearChat">CLEAR</button>
 
+
+
+  <div id="chatContainer" class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Live Chat</h3>
+    </div>
+    <div class="panel-body">
+      <div id="chat"></div>
+      <div id="addMessage">
+      <form>
+        <label>User:<input id="creator"type="text"></label>
+        <label>Message:<input id="content"type="text"></label>
+        <input id="submitMessage" type="submit">
+      </form>
+      </div>
+      <button id="clearChat">CLEAR</button>
+    </div>
   </div>
 
 </div>
 
 <script type="text/template" id="messagesTemplate">
-    <% _.each(messages, function (message) { %>
+    <% _.each(messages, function (message) {
+        console.log(message.post_date);
+        var dMoment = moment(message.post_date, "YYYY-MM-DD HH:mm");
+        var month = dMoment.get('month')+1;
+        var day = dMoment.get('date');
+        if (month < 10)
+          month = '0'+month;
+        if (day < 10)
+          day = '0'+day;
+
+        var time = dMoment.get('hour')+':'+dMoment.get('minute');
+%>
     <div class="message">
-        <p><%= message.creator %> at <%= message.date %>: <%= message.content %></p>
+        <p><span class="creator"><%= message.creator %></span> at <%= month %>-<%= day %> - <%= time %> | <%= message.content %></p>
     </div>
     <% }); %>
 </script>
@@ -45,7 +71,9 @@
 <script src="http://underscorejs.org/underscore.js"></script>
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="http://backbonejs.org/backbone.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/backbone-localstorage.js/1.1.16/backbone.localStorage-min.js"></script>
+<!-- bootstrap JS -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
 <script src="messageModel.js"></script>
 <script src="messagesCollection.js"></script>
 <script src="messageView.js"></script>

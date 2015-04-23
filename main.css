@@ -1,12 +1,46 @@
+/* Add in `Brandon` font */
+@font-face {
+  font-family: 'Brandon';
+  src: url(/fonts/Brandon_light.otf);
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Brandon';
+  src: url(/fonts/Brandon_med.otf);
+  font-style: normal;
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'Brandon';
+  src: url(/fonts/Brandon_bld.otf);
+  font-style: normal;
+  font-weight: bold;
+}
+
+div.container {
+  font-size: 14px;
+  font-family: 'Brandon', sans-serif;
+}
+
+div#initialRow {
+  margin-top: 30px;
+}
+
 div#chatContainer {
-  border: 1px solid red;
-  padding: 10px;
+  /*border: 1px solid red;*/
+  /*padding: 10px;*/
   margin-bottom: 10px;
 }
 div#chat {
-  border: 1px solid red;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
   padding: 10px;
   margin-bottom: 10px;
   max-height: 300px;
   overflow-y: scroll;
+}
+
+span.creator {
+  font-weight: bold;
 }

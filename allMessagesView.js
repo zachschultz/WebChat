@@ -1,6 +1,7 @@
 var app = app || {};
 
 app.allMessagesView = Backbone.View.extend({
+
   initialize: function(options) {
 
     _.bindAll(this, 'render');
@@ -21,7 +22,6 @@ app.allMessagesView = Backbone.View.extend({
         // reset: true,
         success: function() {
           that.render();
-          console.log(theColl);
         }
       });
     }, 3000);
@@ -32,10 +32,12 @@ app.allMessagesView = Backbone.View.extend({
   template: _.template($('#messagesTemplate').html()),
 
   render: function() {
+    console.log(theColl);
 
     $(this.el).find('#chat').html(this.template({
       messages: theColl.toJSON()
     }));
+
     var $chat = $(this.el).find('#chat');
     $chat.scrollTop($chat[0].scrollHeight);
     this.$el.show();
@@ -47,7 +49,7 @@ app.allMessagesView = Backbone.View.extend({
   },
 
   clearChat: function() {
-    console.log('sup');
+    // console.log('sup');
   },
 
   addMessage: function(e) {
