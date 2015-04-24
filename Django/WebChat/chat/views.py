@@ -1,10 +1,13 @@
 from django.http import HttpResponse
 import json
+from django.utils import timezone
 from django.contrib.auth.models import User
 from rest_framework import generics, permissions, renderers
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework import mixins, generics
 from django.views.decorators.csrf import csrf_exempt
 
 from chat.models import Message
@@ -29,10 +32,21 @@ class UserDetail(generics.RetrieveAPIView):
   queryset = User.objects.all()
   serializer_class = UserSerializer
 
-class MessageList(generics.ListCreateAPIView):
+#class MessageList(generics.ListCreateAPIView):
+class MessageList(mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  generics.GenericAPIView):
   permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
   queryset = Message.objects.all()
   serializer_class = MessageSerializer
+  
+  def get(self, request, *args, **kwargs):
+    messagesCount = Message.objects.all().count()
+    if messagesCount >= 30:
+      Message.objects.all().delete()
+    queryset = Message.objects.all()
+    return self.list(request, *args, **kwargs)
+
 
   # def perform_create(self, serializer):
     # serializer.save(owner=self.request.user)
@@ -54,17 +68,16 @@ from rest_framework.decorators import parser_classes
 @parser_classes((JSONParser,))
 def makemessage(request):
 
-  messagesCount = Message.objects.all().count()
-  if messagesCount >= 50:
-
-    Message.objects.filter(id__lt=50).delete()
+  #messagesCount = Message.objects.all().count()
+  #if messagesCount >= 30:
+   # Message.objects.all().delete()
 
   body_unicode = request.body.decode('utf-8')
   body = json.loads(body_unicode)
   content = body['content']
   creator = body['creator']
 
-  msg = Message(content=content, creator=creator)
+  msg = Message(content=content, creator=creator, post_date=timezone.now())
   msg.save()
 
   return HttpResponse(body)
