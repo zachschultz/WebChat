@@ -51,17 +51,19 @@
 
 <script type="text/template" id="messagesTemplate">
     <% _.each(messages, function (message) {
-        console.log(message.post_date);
-        var dMoment = moment(message.post_date, "YYYY-MM-DD HH:mm");
+        var dMoment = moment(message.post_date, "YYYY-MM-DDTHH:mm");
         var month = dMoment.get('month')+1;
         var day = dMoment.get('date');
+        var minutes = dMoment.get('minutes');
         if (month < 10)
           month = '0'+month;
         if (day < 10)
           day = '0'+day;
+        if (minutes < 10)
+          minutes = '0'+minutes;
+        var time = dMoment.get('hour')+':'+minutes;
+    %>
 
-        var time = dMoment.get('hour')+':'+dMoment.get('minute');
-%>
     <div class="message">
         <p><span class="creator"><%= message.creator %></span> at <%= month %>-<%= day %> - <%= time %> | <%= message.content %></p>
     </div>

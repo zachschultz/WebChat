@@ -6,20 +6,20 @@ app.allMessagesView = Backbone.View.extend({
 
     _.bindAll(this, 'render');
     this.collection = new app.Messages();
-    theColl = this.collection;
+    this.theColl = this.collection;
     var that = this;
     var firstMessage = options.firstMessage;
     $('input#creator').val(firstMessage.get('creator'));
 
     firstMessage.save();
 
-    theColl.on('add', this.render, this);
-    theColl.on('reset', this.render, this);
+    this.theColl.on('add', this.render, this);
+    this.theColl.on('reset', this.render, this);
     this.render();
 
     window.setInterval(function() {
-      theColl.fetch({
-        // reset: true,
+      that.theColl.fetch({
+        reset: true,
         success: function() {
           that.render();
         }
@@ -32,10 +32,10 @@ app.allMessagesView = Backbone.View.extend({
   template: _.template($('#messagesTemplate').html()),
 
   render: function() {
-    console.log(theColl);
+    console.log(this.theColl);
 
     $(this.el).find('#chat').html(this.template({
-      messages: theColl.toJSON()
+      messages: this.theColl.toJSON()
     }));
 
     var $chat = $(this.el).find('#chat');

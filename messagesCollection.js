@@ -7,6 +7,8 @@ app.Messages = Backbone.Collection.extend({
   url: 'http://46.101.161.80/messages/',
 
   parse: function(response) {
+
+    console.log(response);
     return response.results;
   },
 
