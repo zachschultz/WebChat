@@ -12,6 +12,10 @@ app.Messages = Backbone.Collection.extend({
     return response.results;
   },
 
+  comparator: function(model) {
+    return model.get('post_date');
+  },
+
   sync: function(method, model, options) {
     var that = this;
     var params = _.extend({
